@@ -11,3 +11,4 @@ Installation
 > Note - Ideally avoid checking-in raw database files.
 4. Run the server by running the command ```python manage.py runserver```.
 5. Homepage can be found on the url `http://localhost:8000`
+6. Admin password is `username-*admin*, password-*admin*`
