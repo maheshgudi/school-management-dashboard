@@ -65,12 +65,18 @@ class Chapter(models.Model):
     def __str__(self):
         return f"Chapter: {self.name}"
 
+class ClassManager(models.Manager):
+
+    def filter_teachers(self, teacher_name):
+        return Class.objects.filter(teacher__full_name__icontains=teacher_name)
+
 
 class Class(models.Model):
     room = models.ForeignKey("ClassRoom", on_delete=models.CASCADE)
     subject = models.ForeignKey("Subject", on_delete=models.CASCADE)
     teacher = models.ForeignKey("Teacher", on_delete=models.CASCADE)
     students = models.ManyToManyField("Student")
+    objects = ClassManager()
 
     def __str__(self):
         return f"Class: {self.subject.name} is taken by {self.teacher.full_name} in room {self.room.shape}" 

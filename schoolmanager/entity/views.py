@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.views import View
+from django.db.models import Sum, Count
+
 from .models import (
     Teacher,
     Student,
@@ -12,7 +14,7 @@ from .models import (
 from .forms import SearchTeacher
 
 def get_class_info(request):
-    classes = Class.objects.order_by("id")
+    classes = Class.objects.all()
     context = {"classes": classes}
     return render(request, "entity/classroom_details.html", context)
 
@@ -34,3 +36,28 @@ class SearchTeacherFormView(View):
             classes = form.save(query=query)
             context.update({"class":classes})
         return render(request, self.template_name, context)
+
+
+def get_teachers_by_salaries(request):
+    # @TODO- Create a form to search teachers by salary caps.
+    # For now writing a hardcoded 1 LPA
+
+    context = {}
+    salary_lower_cap = 100000
+    classes =  Class.objects.filter(teacher__salary__gt=salary_lower_cap)
+    total_salaries = classes.aggregate(Sum("teacher__salary"))
+    total_students = classes.aggregate(Count("students", distinct=True))
+    total_teachers = classes.aggregate(Count("teacher", distinct=True))
+    context.update(
+        {"total_students": total_students,
+         "total_salaries":total_salaries,
+         "teachers": total_teachers,
+         })
+    return render(request, "entity/teachers_salaries.html", context)
+
+class MultipleTeachersView(View):
+    template_name = 'entity/.html'
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+        return render(request, self.template_name, {'form': form})

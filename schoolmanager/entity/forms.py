@@ -9,7 +9,7 @@ class SearchTeacher(forms.Form):
 
     def save(self, query):
         try:
-            teacher = Class.objects.filter(teacher__full_name__icontains=query)
+            teacher = Class.objects.filter_teachers(query)
         except Class.DoesNotExist:
             teacher = None
         return teacher
