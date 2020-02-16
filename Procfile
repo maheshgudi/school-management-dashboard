@@ -1,1 +1,1 @@
-web: gunicorn schoolmanager.schoolmanager.asgi
+web: gunicorn schoolmanager.schoolmanager.wsgi
