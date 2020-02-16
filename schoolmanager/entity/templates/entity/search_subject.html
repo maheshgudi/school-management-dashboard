@@ -5,6 +5,7 @@
 	{{form}}
 	<input type="submit" name="submit" value="Search">
 </form>
+{% if teacher %}
 <table border="2">
 	<tr>
 		<th>No. of Teacher</th>
@@ -17,4 +18,5 @@
 		<td>{{total_hours.subject__total_duration__sum}}</td>
 	</tr>
 </table>
+{% endif %}
 {% endblock %}
