@@ -70,6 +70,9 @@ class ClassManager(models.Manager):
     def filter_teachers(self, teacher_name):
         return Class.objects.filter(teacher__full_name__icontains=teacher_name)
 
+    def filter_subject(self, subject):
+        return Class.objects.filter(subject=subject)
+
 
 class Class(models.Model):
     room = models.ForeignKey("ClassRoom", on_delete=models.CASCADE)

@@ -11,7 +11,7 @@ from .models import (
     Chapter,
     Class,
     )
-from .forms import SearchTeacher
+from .forms import SearchTeacher, SearchSubject
 
 def get_class_info(request):
     classes = Class.objects.all()
@@ -55,9 +55,19 @@ def get_teachers_by_salaries(request):
          })
     return render(request, "entity/teachers_salaries.html", context)
 
-class MultipleTeachersView(View):
-    template_name = 'entity/.html'
+class SearchSubjectFormView(View):
+    form_class = SearchSubject
+    template_name = 'entity/search_subject.html'
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
         return render(request, self.template_name, {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        context = {}
+        form = self.form_class(request.POST)
+        context.update({'form': form})
+        if form.is_valid():
+            query = form.cleaned_data.get("subject")
+            context.update(form.save(query=query))
+        return render(request, self.template_name, context)
