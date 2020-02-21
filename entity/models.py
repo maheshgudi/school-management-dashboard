@@ -20,7 +20,7 @@ class Teacher(models.Model):
 class Student(models.Model):
     full_name = models.CharField(max_length=40)
     date_of_joining = models.DateField()
-    standard = models.PositiveSmallIntegerField(validators=[MaxValueValidator(1), MinValueValidator(10)])
+    standard = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(10)])
     roll_no = models.PositiveIntegerField(unique=True)
     rank = models.PositiveIntegerField()
     point_of_contact = models.ManyToManyField("Relative")
